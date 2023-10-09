@@ -1,11 +1,27 @@
 ﻿namespace Bankomaten
 {
     internal class Program
-    {  // Skapat användare och pinkoder
+    {  // Skapat användare och pinkoder, skapas som static annars kommer inte inloggningskollen åt den. Jugged array används. 
         static string[] Användare = { "Ermin", "Christian", "Markus", "Shahram", "Fredrik" };
         static string[] PinKod = { "1111", "2222", "3333", "4444", "5555" };
-        static string[] KontoÄgare = { "Ermin", "Christian", "Markus", "Shahram", "Fredrik" };
+        static string[] KontoÄgare =   { "Ermin", "Christian", "Markus", "Shahram", "Fredrik" };
+    static string[][] KontoNamn = {
+        new string[] { "Lönekonto", "Sparkonto" },
+        new string[] { "Lönekonto", "Sparkonto" },
+        new string[] { "Lönekonto" },
+        new string[] { "Lönekonto", "Sparkonto" },
+        new string[] { "Lönekonto", "Sparkonto" }
+    };
+        static decimal[][] KontoSaldo = {
+        new decimal[] { 1000.0m, 500.0m },
+        new decimal[] { 800.0m, 300.0m },
+        new decimal[] { 1200.0m },
+        new decimal[] { 1500.0m, 100.0m },
+        new decimal[] { 900.0m, 200.0m }
+        };
 
+        // tom placeholder så bankomaten kan använda en användare i taget. 
+        static string inloggadSom = "";
 
         static void Main(string[] args)
         {
@@ -25,46 +41,65 @@
                 if (InloggningsKoll(AnvändarNamn, AnvändarPin))
                 {
                     Inloggad = true;
+                    inloggadSom = AnvändarNamn;
+                    Console.WriteLine("Du är nu inloggad som {0}", AnvändarNamn);
                 }
                 else
                 {
                     InloggningsFörsök++;
-                    Console.WriteLine("Fel inloggningsuppgifter, maximalt tre försök!");
+                    Console.WriteLine("Fel inloggningsuppgifter!");
                 }
             }
+            Console.Clear();
 
-            if (Inloggad)
+            Console.WriteLine("Välj vad du vill göra i menyn:");
+            Console.WriteLine("");
+            string val = "";
+
+            while (val != "4")
             {
-                Console.WriteLine("Välj vad du vill göra i menyn:");
+                Console.WriteLine("Meny:");
                 Console.WriteLine("1. Se konton och saldon");
                 Console.WriteLine("2. För över pengar mellan konton");
                 Console.WriteLine("3. Uttag av pengar");
                 Console.WriteLine("4. Logga ut");
-                string val = Console.ReadLine();
+            
 
-                switch (val)
+                if (Inloggad)
                 {
-                    case "1":
 
-                        break;
-                    case "2":
+                    val = Console.ReadLine();
+                    Console.Clear();
 
-                        break;
-                    case "3":
+                    switch (val)
+                    {
+                        case "1":
+                            VisaKontoSaldo();
 
-                        break;
-                    case "4":
+                            break;
+                        case "2":
 
-                        break;
-                    default:
-                        Console.WriteLine("Ogiltigt val. Försök igen.");
-                        break;
+                            break;
+                        case "3":
+
+                            break;
+                        case "4":
+
+                            break;
+                        default:
+                            Console.WriteLine("Ogiltigt val. Försök igen.");
+                            break;
+                    }
                 }
-            }
 
-            else
-            {
-                Console.WriteLine("Inloggning misslyckades. Din användar har låsts.");
+                else
+                {
+                    Console.WriteLine("");
+                    Console.WriteLine("Inloggning misslyckades, din användare är låst. Kontakta banken");
+                }
+                Console.WriteLine("Klicka Enter för att återgå till menyn.");
+                Console.ReadLine();
+                Console.Clear();
             }
         }
 
@@ -79,8 +114,20 @@
             }
             return false;
         }
-
+        static void VisaKontoSaldo()
+        {
+            
+            int AnvändarIndex = Array.LastIndexOf(KontoÄgare, inloggadSom);
+            
+            Console.WriteLine($"Konton och saldo för {inloggadSom}:");
+            Console.WriteLine("");
+            for (int i = 0; i < KontoNamn[AnvändarIndex].Length; i++)
+            {
+                Console.WriteLine($"{KontoNamn[AnvändarIndex][i]}: {KontoSaldo[AnvändarIndex][i]:C}");
+            }
+        }
     }
+
 
 
 }
