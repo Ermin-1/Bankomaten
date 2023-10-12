@@ -6,18 +6,18 @@
         static string[] PinKod = { "1111", "2222", "3333", "4444", "5555" };
         static string[] KontoÄgare =   { "Ermin", "Christian", "Markus", "Shahram", "Fredrik" };
         static string[][] KontoNamn = {
+        new string[] { "Lönekonto", "Sparkonto", "Privatkonto", "Huskonto", "Rainyday-fun" },
+        new string[] { "Lönekonto", "Sparkonto", "Privatkonto", "Huskonto" },
+        new string[] { "Lönekonto", "Sparkonto", "Privatkonto" },
         new string[] { "Lönekonto", "Sparkonto" },
-        new string[] { "Lönekonto", "Sparkonto" },
-        new string[] { "Lönekonto" },
-        new string[] { "Lönekonto", "Sparkonto" },
-        new string[] { "Lönekonto", "Sparkonto" }
+        new string[] { "Lönekonto" }
     };
         static decimal[][] KontoSaldo = {
-        new decimal[] { 1000.0m, 500.0m },
-        new decimal[] { 800.0m, 300.0m },
-        new decimal[] { 1200.0m },
-        new decimal[] { 1500.0m, 100.0m },
-        new decimal[] { 900.0m, 200.0m }
+        new decimal[] { 27500.0m, 300000.0m, 50000.0m, 20000.0m, 100000.0m },
+        new decimal[] { 42000.0m, 200000.0m, 150000.0m, 60000.0m },
+        new decimal[] { 25000.0m, 46000.0m, 450000.0m },
+        new decimal[] { 15000.0m, 10000.0m },
+        new decimal[] { 90000.0m}
         };
 
         // tom placeholder så bankomaten vet vem som är inloggad. 
@@ -105,6 +105,7 @@
                     }
                 }
 
+                Console.WriteLine("");
                 Console.WriteLine("Klicka Enter för att återgå till menyn.");
                 Console.ReadLine();
                 Console.Clear();
@@ -212,6 +213,7 @@
             {
                 Console.WriteLine("Ogiltigt kontoval för avsändande konto. Ange en siffra som motsvarar ett av dina konton.");
             }
+            Console.WriteLine("");
         }
 
         static void TaUtPengar()
