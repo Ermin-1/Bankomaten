@@ -96,8 +96,8 @@
                             TaUtPengar(); 
                             break;
                         case "4":
-                            Utloggning();
-                            System.Environment.Exit(1); // Utan EXIT så repterar programmet "Klicka på enter för att återgå till menyn" vid avslut
+                            Main(args);
+                            
                             break;
                         default:
                             Console.WriteLine("Ogiltigt val. Försök igen.");
@@ -312,14 +312,6 @@
             }
         }
 
-
-        // Ändrar inloggadSom till null vilket gör att programmet slutar köras. 
-        static void Utloggning() 
-        {
-            inloggadSom = "";
-            Console.WriteLine("Utloggad: Välkommen åter!");
-            
-        }
     }
 
 }
