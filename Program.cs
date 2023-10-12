@@ -77,7 +77,7 @@
                 Console.WriteLine("4. Logga ut");
             
 
-                if (Inloggad)
+                if (Inloggad) // kör eftersom ovan inloggad blev true.
                 {
 
                     val = Console.ReadLine();
@@ -105,11 +105,6 @@
                     }
                 }
 
-                else
-                {
-                    Console.WriteLine("");
-                    Console.WriteLine("Inloggning misslyckades, din användare är låst. Kontakta banken");
-                }
                 Console.WriteLine("Klicka Enter för att återgå till menyn.");
                 Console.ReadLine();
                 Console.Clear();
@@ -118,32 +113,47 @@
 
         static bool InloggningsKoll(string Användarnamn, string AnvändarPin)
         {
+            // kör for loop för att gå igenom användare och pinkoder och hitta en matchning
+            // Jämför i if-satsen om användarnamn och pin matchar. 
             for (int i = 0; i < Användare.Length && i < PinKod.Length; i++)
             {
+                
                 if (Användare[i] == Användarnamn && PinKod[i] == AnvändarPin)
                 {
+                 
                     return true;
                 }
             }
+            // Om inloggning misslyckas retunernar den false och man får försöka logga in igen. 
             return false;
         }
+
         static void VisaKontoSaldo()
         {
-            
+            // Hitta användarens index baserat på inloggadSom i arrayen KontoÄgare.
             int AnvändarIndex = Array.LastIndexOf(KontoÄgare, inloggadSom);
-            
+
+           
             Console.WriteLine($"Konton och saldo för {inloggadSom}:");
             Console.WriteLine("");
+
+            // Loopar igenom användarens konton och skriver ut kontonamn och saldo.
+            // :C tillagt för att skriva ut som valuta kr.
             for (int i = 0; i < KontoNamn[AnvändarIndex].Length; i++)
             {
-                Console.WriteLine($"{KontoNamn[AnvändarIndex][i]}: {KontoSaldo[AnvändarIndex][i]:C}"); // WTF?
+            
+                Console.WriteLine($"{KontoNamn[AnvändarIndex][i]}: {KontoSaldo[AnvändarIndex][i]:C}");
             }
         }
 
+
         static void FöraÖverPengar()
         {
+            //Söker efter användaren "inloggad som" i Arrayen Användare. Sparas i ny variabel användarIndex
             int användarIndex = Array.IndexOf(Användare, inloggadSom);
 
+            // går igenom arrayen KontoNamn med placering av användarIndex ( den inloggade ) och skrivs sedan ut. 
+            // i + 1 används för att tilldela första kontot värdet 1 och inte 0. 
             Console.WriteLine("Dina konton:");
             for (int i = 0; i < KontoNamn[användarIndex].Length; i++)
             {
@@ -151,22 +161,34 @@
             }
 
             Console.Write("Välj konto att överföra pengar från (ange siffran): ");
-            if (int.TryParse(Console.ReadLine(), out int frånKonto) && frånKonto >= 1 && frånKonto <= KontoNamn[användarIndex].Length)
+            int frånKonto = int.Parse(Console.ReadLine());
+
+            // Om frånKonto är ett giltligt heltal och inom intervallet mellan 1 och antal konto i indexet forstter den in i if-satsen
+            if ( frånKonto >= 1 && frånKonto <= KontoNamn[användarIndex].Length)
             {
+                // nytt frånKontoIndex som tilldelas värdet frånkonto - 1
                 int frånKontoIndex = frånKonto - 1;
 
                 Console.Write("Välj konto att överföra pengar till (ange siffran): ");
-                if (int.TryParse(Console.ReadLine(), out int tillKonto) && tillKonto >= 1 && tillKonto <= KontoNamn[användarIndex].Length)
+                int tillKonto = int.Parse(Console.ReadLine());
+
+                // Kontrollerar om tillKonto är ett giltigt heltal inom rätt intervall i indexet
+                if ( tillKonto >= 1 && tillKonto <= KontoNamn[användarIndex].Length)
                 {
+                    // Beräknar indexet för det valda tillKonto
                     int tillKontoIndex = tillKonto - 1;
 
                     Console.Write("Ange belopp att överföra: ");
-                    if (decimal.TryParse(Console.ReadLine(), out decimal överföringsBelopp) && överföringsBelopp > 0)
+                    decimal överföringsBelopp = decimal.Parse(Console.ReadLine());
+                    if (överföringsBelopp > 0)
                     {
+                        // Kontrollerar om det finns tillräckligt med saldo på avsändande konto
                         if (KontoSaldo[användarIndex][frånKontoIndex] >= överföringsBelopp)
                         {
+                            // Utför överföringen och uppdaterar saldon
                             KontoSaldo[användarIndex][frånKontoIndex] -= överföringsBelopp;
                             KontoSaldo[användarIndex][tillKontoIndex] += överföringsBelopp;
+                            Console.WriteLine("");
                             Console.WriteLine($"{överföringsBelopp:C} har överförts från {KontoNamn[användarIndex][frånKontoIndex]} till {KontoNamn[användarIndex][tillKontoIndex]}.");
                             Console.WriteLine($"Nytt saldo för {KontoNamn[användarIndex][frånKontoIndex]}: {KontoSaldo[användarIndex][frånKontoIndex]:C}");
                             Console.WriteLine($"Nytt saldo för {KontoNamn[användarIndex][tillKontoIndex]}: {KontoSaldo[användarIndex][tillKontoIndex]:C}");
@@ -194,45 +216,102 @@
 
         static void TaUtPengar()
         {
+            // Här söker vi efter användaren i arrayen Användare och får dess indexnummer
             int användarIndex = Array.IndexOf(Användare, inloggadSom);
 
+           
             Console.WriteLine($"Dina tillgängliga konton:");
             for (int i = 0; i < KontoNamn[användarIndex].Length; i++)
             {
                 Console.WriteLine($"{i + 1}. {KontoNamn[användarIndex][i]}");
             }
 
+          
             Console.Write("Välj konto att ta ut pengar från (ange siffran): ");
-            if (int.TryParse(Console.ReadLine(), out int valtKonto) && valtKonto >= 1 && valtKonto <= KontoNamn[användarIndex].Length)
+            int valtKonto = int.Parse(Console.ReadLine());
+
+            // Kolla om det valda kontot existerar
+            if (valtKonto >= 1 && valtKonto <= KontoNamn[användarIndex].Length)
             {
+                // Justerar indexet för att matcha arrayens index som börjar med 0.
                 int kontoIndex = valtKonto - 1;
 
+               
                 Console.Write("Ange belopp att ta ut: ");
-                if (decimal.TryParse(Console.ReadLine(), out decimal uttagsBelopp) && uttagsBelopp > 0)
+                decimal uttagsBelopp = decimal.Parse(Console.ReadLine());
+
+                bool rättPin = false;
+                int försök = 0;
+
+                while (försök < 3)
                 {
+                    Console.Write("Ange pinkod: ");
+                    string AnvändarPin = Console.ReadLine();
+
+                    // Loopa igenom pinkoderna och kontrollera om det finns en matchning
+                    for (int i = 0; i < PinKod.Length; i++)
+                    {
+                        if (PinKod[i] == AnvändarPin)
+                        {
+                            rättPin = true;
+                            break; // Avsluta loopen om en matchning hittas
+                        }
+                    }
+
+                    if (rättPin)
+                    {
+                        break; // Avsluta pinkodsluppen om rätt pinkod hittades
+                    }
+                    else
+                    {
+                        Console.WriteLine("Fel pinkod. Försök igen.");
+                        försök++;
+                    }
+                }
+
+                if (rättPin)
+                {
+                    // Pinkoden är korrekt, fortsätt med uttagsprocessen
+                }
+                else
+                {
+                    Console.WriteLine("För många felaktiga försök. Bankomaten utloggad.");
+                    System.Environment.Exit(1);
+                }
+
+
+                if (uttagsBelopp > 0)
+                {
+                    // Kolla om det finns tillräckligt saldo på det valda kontot.
                     if (KontoSaldo[användarIndex][kontoIndex] >= uttagsBelopp)
                     {
+                        
+                        // Dra av uttagsbeloppet från kontosaldo och skriv ut bekräftelse.
                         KontoSaldo[användarIndex][kontoIndex] -= uttagsBelopp;
                         Console.WriteLine($"{uttagsBelopp:C} har tagits ut från {KontoNamn[användarIndex][kontoIndex]}.");
                         Console.WriteLine($"Nytt saldo för {KontoNamn[användarIndex][kontoIndex]}: {KontoSaldo[användarIndex][kontoIndex]:C}");
                     }
                     else
                     {
+                      
                         Console.WriteLine("Otillräckligt saldo för att ta ut det angivna beloppet.");
                     }
                 }
                 else
                 {
+          
                     Console.WriteLine("Ogiltigt belopp. Ange ett positivt decimaltal.");
                 }
             }
             else
             {
+             
                 Console.WriteLine("Ogiltigt kontoval. Ange en siffra som motsvarar ett av dina konton.");
             }
         }
 
 
+        // Ändrar inloggadSom till null vilket gör att programmet slutar köras. 
         static void Utloggning() 
         {
             inloggadSom = "";
