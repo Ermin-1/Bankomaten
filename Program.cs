@@ -34,6 +34,7 @@
 
             while (!Inloggad && InloggningsFörsök < 3)
             {
+
                 Console.Write("Ange användarnamn:");
                 string AnvändarNamn = Console.ReadLine();
 
@@ -112,14 +113,14 @@
             }
         }
 
-        static bool InloggningsKoll(string Användarnamn, string AnvändarPin)
+        static bool InloggningsKoll(string AnvändarNamn, string AnvändarPin)
         {
             // kör for loop för att gå igenom användare och pinkoder och hitta en matchning
             // Jämför i if-satsen om användarnamn och pin matchar. 
             for (int i = 0; i < Användare.Length && i < PinKod.Length; i++)
             {
                 
-                if (Användare[i] == Användarnamn && PinKod[i] == AnvändarPin)
+                if (Användare[i] == AnvändarNamn && PinKod[i] == AnvändarPin)
                 {
                  
                     return true;
@@ -138,7 +139,7 @@
             Console.WriteLine($"Konton och saldo för {inloggadSom}:");
             Console.WriteLine("");
 
-            // Loopar igenom användarens konton och skriver ut kontonamn och saldo.
+            // Loopar igenom användarens konton genom ovan angivet AnvändarIndex och skriver ut kontonamn och saldo.
             // :C tillagt för att skriva ut som valuta kr.
             for (int i = 0; i < KontoNamn[AnvändarIndex].Length; i++)
             {
@@ -150,7 +151,7 @@
 
         static void FöraÖverPengar()
         {
-            //Söker efter användaren "inloggad som" i Arrayen Användare. Sparas i ny variabel användarIndex
+            // Hämtar användarens index i arrayen Användare baserat på det inloggade användarnamnet inloggadSom. 
             int användarIndex = Array.IndexOf(Användare, inloggadSom);
 
             // går igenom arrayen KontoNamn med placering av användarIndex ( den inloggade ) och skrivs sedan ut. 
@@ -167,16 +168,16 @@
             // Om frånKonto är ett giltligt heltal och inom intervallet mellan 1 och antal konto i indexet forstter den in i if-satsen
             if ( frånKonto >= 1 && frånKonto <= KontoNamn[användarIndex].Length)
             {
-                // nytt frånKontoIndex som tilldelas värdet frånkonto - 1
+                // beräknas med minus 1 på från konto eftersom användarens val är numrerat från 1 i menyn, men array-indexeringen börjar från 0.
                 int frånKontoIndex = frånKonto - 1;
 
                 Console.Write("Välj konto att överföra pengar till (ange siffran): ");
                 int tillKonto = int.Parse(Console.ReadLine());
 
-                // Kontrollerar om tillKonto är ett giltigt heltal inom rätt intervall i indexet
+                // Kontrollerar om tillKonto existrerar i indexet
                 if ( tillKonto >= 1 && tillKonto <= KontoNamn[användarIndex].Length)
                 {
-                    // Beräknar indexet för det valda tillKonto
+                    // Samma sätt som tidigare beräknas index för det valda mottagande kontot genom att ta bort 1 från användarens inmatning.
                     int tillKontoIndex = tillKonto - 1;
 
                     Console.Write("Ange belopp att överföra: ");
