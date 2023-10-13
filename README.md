@@ -47,3 +47,8 @@ Användaren kan ta ut pengar från ett av sina konton. Det kräver att användar
 Utloggning:
 
 När användaren väljer att logga ut, avslutas progarmmet.
+
+Argument för koden:
+
+Ett bättre och enklare alternativ för koden hade varit att göra den med OOP. Skapa olika klasser och kalla på dom i Main metoden. Jag valde att inte göra det eftersom huvudläraren på skolan sa att detta är ett bra sätt att förstå varför OOP är så bra, att det inte ska bli så rörigt i koden. 
+Istället för arrayer hade jag velat använda mig av en <list> och skapa databasen i en annan klass med getters/setters { get : set }. Detta också för att koden skulle bli mer lättläst. Uppgiften krävde Array vilket då blev valet. Jag valde en Jugged Array istället för en multidimensional efterssom jag ville prova olika lösningar. Jugged Array tar mer plats i minnet men eftersom detta är ett litet konsolprogram så ansåg jag inte att det kommer påverka datorns prestanda. I "det verkliga livet" hade en multidimensinell array passat bättre. 
